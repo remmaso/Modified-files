@@ -1,0 +1,5 @@
+/workspace
+-rw-r--r-- 1 root root 3071 Oct  2 09:10 index.html
+-rw-r--r-- 1 root root 3438 Oct  2 09:11 index_working.html
+-rw-r--r-- 1 root root 1801 Oct  2 09:01 test_websocket.html
+-rw-r--r-- 1 root root 9602 Oct  2 09:12 websocket_test.html

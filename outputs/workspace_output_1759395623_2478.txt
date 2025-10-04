@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/websockets/asyncio/server.py", l
+ine 376, in conn_handler
+    await self.handler(connection)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: WebChatServer.handle_client() missing 1 required positional argument:
+ 'path'
+connection handler failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/websockets/asyncio/server.py", l
+ine 376, in conn_handler
+    await self.handler(connection)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: WebChatServer.handle_client() missing 1 required positional argument:
+ 'path'
+connection handler failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/websockets/asyncio/server.py", l
+ine 376, in conn_handler
+    await self.handler(connection)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: WebChatServer.handle_client() missing 1 required positional argument:
+ 'path'
+

@@ -1,0 +1,10 @@
+==================================================
+Chat Application Test Suite
+==================================================
+Testing connection to chat server...
+✓ Server requested nickname
+✓ Received: [SERVER] TestUser joined the chat!
+✓ Sent test message
+✓ Connection test passed!
+==================================================
+Test completed!

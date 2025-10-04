@@ -1,0 +1,12 @@
+root         106  0.0  0.0  37092 30608 pts/0    S+   08:27   0:00 /usr/bin/python3 /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
+root         202  0.0  0.0 1059324 72412 pts/0   Sl   08:27   0:04 /usr/local/lib/python3.11/site-packages/playwright/driver/node /usr/local/lib/python3.11/site-packages/playwright/driver/package/cli.js run-driver
+root         551  0.0  0.0  29108 23452 pts/0    S    08:27   0:00 python3 -m websockify --web /opt/novnc 0.0.0.0:6080 localhost:5901
+root         573  0.0  0.0      0     0 pts/0    Z+   08:28   0:00 [python3] <defunct>
+root         588  0.0  0.0      0     0 ?        Zs   08:30   0:00 [python3] <defunct>
+root         651  0.0  0.0      0     0 pts/0    Z+   08:30   0:00 [python3] <defunct>
+root         865  0.0  0.0      0     0 ?        Zs   08:37   0:00 [python3] <defunct>
+root         892  0.0  0.0      0     0 ?        Zs   08:37   0:00 [python3] <defunct>
+root         978  0.0  0.0      0     0 pts/0    Z+   08:38   0:00 [python3] <defunct>
+root        1360  0.0  0.0      0     0 ?        Zs   09:01   0:00 [python3] <defunct>
+root        1488  0.0  0.0      0     0 ?        Zs   09:03   0:00 [python3] <defunct>
+root        1596  0.0  0.0  44520 37012 pts/0    S+   09:09   0:00 python3 chat_server_simple.py

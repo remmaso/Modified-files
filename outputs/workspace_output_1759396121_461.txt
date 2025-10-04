@@ -1,0 +1,26 @@
+[SERVER] Starting chat servers...
+[SERVER] WebSocket server starting on 0.0.0.0:8765
+[SERVER] HTTP server starting on 0.0.0.0:8080
+[SERVER] WebSocket server is running and waiting for connections...
+Traceback (most recent call last):
+  File "/workspace/chat_server_simple.py", line 191, in <module>
+    asyncio.run(server.start())
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/workspace/chat_server_simple.py", line 183, in start
+    await asyncio.gather(
+  File "/workspace/chat_server_simple.py", line 175, in start_http_server
+    await site.start()
+  File "/usr/local/lib/python3.11/site-packages/aiohttp/web_runner.py", line 121, in start
+    self._server = await loop.create_server(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 1536, in create_server
+    raise OSError(err.errno, msg) from None
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8080): address already in use

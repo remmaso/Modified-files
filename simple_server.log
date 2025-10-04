@@ -1,0 +1,12 @@
+[SERVER] Starting chat servers...
+[SERVER] WebSocket server starting on 0.0.0.0:8765
+[SERVER] HTTP server starting on 0.0.0.0:8081
+[SERVER] WebSocket server is running and waiting for connections...
+[SERVER] HTTP server is running
+[SERVER] New client connected. Total clients: 1
+[ERROR] Error handling message: received 1000 (OK); then sent 1000 (OK)
+[SERVER] TestUser disconnected. Total clients: 0
+[SERVER] New client connected. Total clients: 1
+[SERVER] New client connected. Total clients: 2
+[ERROR] Error handling message: received 1000 (OK); then sent 1000 (OK)
+[SERVER] TestUser disconnected. Total clients: 1

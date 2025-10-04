@@ -1,0 +1,7 @@
+🧪 Testing WebSocket connection...
+✅ WebSocket connected successfully!
+📤 Sent join message
+📨 Received: {"type": "system", "text": "Welcome to the chat, TestUser!", "timestamp": "09:13:12"}
+📤 Sent test message
+📨 Received: {"type": "system", "text": "TestUser joined the chat", "timestamp": "09:13:12"}
+✅ Test completed successfully!

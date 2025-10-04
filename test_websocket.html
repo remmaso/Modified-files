@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <h1>WebSocket Connection Test</h1>
+    <div id="status">Connecting...</div>
+    <div id="messages"></div>
+    
+    <script>
+        const status = document.getElementById('status');
+        const messages = document.getElementById('messages');
+        
+        try {
+            const ws = new WebSocket('wss://8765-566bbffc-be5f-4b4b-9f91-e404e1f921df.proxy.daytona.works');
+            
+            ws.onopen = function() {
+                status.textContent = '✅ Connected!';
+                status.style.color = 'green';
+                
+                // Send join message
+                ws.send(JSON.stringify({
+                    type: 'join',
+                    nickname: 'TestUser'
+                }));
+            };
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                const msg = document.createElement('div');
+                msg.textContent = 'Received: ' + JSON.stringify(data);
+                messages.appendChild(msg);
+            };
+            
+            ws.onerror = function(error) {
+                status.textContent = '❌ Connection Error';
+                status.style.color = 'red';
+                console.error('WebSocket error:', error);
+            };
+            
+            ws.onclose = function() {
+                status.textContent = '🔌 Disconnected';
+                status.style.color = 'orange';
+            };
+            
+        } catch (error) {
+            status.textContent = '❌ Failed to connect: ' + error.message;
+            status.style.color = 'red';
+        }
+    </script>
+</body>
+</html>

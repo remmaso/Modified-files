@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .connecting {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .connection-info {
+            background: #e7f3ff;
+            border: 1px solid #b8daff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 WebSocket Connection Test</h1>
+        
+        <div class="connection-info">
+            <h3>Connection Details:</h3>
+            <p><strong>WebSocket URL:</strong> <code>ws://localhost:8765</code></p>
+            <p><strong>HTTP Status URL:</strong> <code>http://localhost:8081</code></p>
+            <p><strong>Status:</strong> <span id="server-status">Checking...</span></p>
+        </div>
+
+        <div id="connection-status" class="status connecting">
+            🔌 Disconnected - Click "Test Connection" to start
+        </div>
+
+        <div>
+            <button class="btn" id="test-btn">Test Connection</button>
+            <button class="btn" id="send-btn" disabled>Send Test Message</button>
+            <button class="btn" id="disconnect-btn" disabled>Disconnect</button>
+        </div>
+
+        <div class="log" id="log">
+            <div>📋 WebSocket test initialized. Click "Test Connection" to begin.</div>
+        </div>
+    </div>
+
+    <script>
+        class WebSocketTest {
+            constructor() {
+                this.ws = null;
+                this.log = document.getElementById('log');
+                this.status = document.getElementById('connection-status');
+                this.testBtn = document.getElementById('test-btn');
+                this.sendBtn = document.getElementById('send-btn');
+                this.disconnectBtn = document.getElementById('disconnect-btn');
+                
+                this.initEventListeners();
+                this.checkServerStatus();
+            }
+            
+            initEventListeners() {
+                this.testBtn.addEventListener('click', () => this.testConnection());
+                this.sendBtn.addEventListener('click', () => this.sendTestMessage());
+                this.disconnectBtn.addEventListener('click', () => this.disconnect());
+            }
+            
+            async checkServerStatus() {
+                try {
+                    const response = await fetch('http://localhost:8081/');
+                    const data = await response.json();
+                    document.getElementById('server-status').innerHTML = 
+                        `✅ Server running - ${data.connected_users} users connected`;
+                } catch (error) {
+                    document.getElementById('server-status').innerHTML = 
+                        `❌ Server not responding - ${error.message}`;
+                }
+            }
+            
+            logMessage(message, type = 'info') {
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.style.marginBottom = '5px';
+                entry.textContent = `[${timestamp}] ${message}`;
+                
+                if (type === 'error') entry.style.color = 'red';
+                if (type === 'success') entry.style.color = 'green';
+                if (type === 'warning') entry.style.color = 'orange';
+                
+                this.log.appendChild(entry);
+                this.log.scrollTop = this.log.scrollHeight;
+            }
+            
+            testConnection() {
+                this.logMessage('🚀 Testing WebSocket connection...');
+                this.updateStatus('connecting', '🔌 Connecting...');
+                
+                try {
+                    // Test different WebSocket URLs
+                    const wsUrls = [
+                        'ws://localhost:8765',
+                        'ws://127.0.0.1:8765'
+                    ];
+                    
+                    const wsUrl = wsUrls[0]; // Try localhost first
+                    this.logMessage(`📡 Connecting to: ${wsUrl}`);
+                    
+                    this.ws = new WebSocket(wsUrl);
+                    
+                    this.ws.onopen = () => {
+                        this.logMessage('✅ WebSocket connected successfully!', 'success');
+                        this.updateStatus('connected', '✅ Connected');
+                        this.updateButtons(true);
+                        
+                        // Send a join message
+                        this.sendToServer({
+                            type: 'join',
+                            nickname: 'TestUser'
+                        });
+                    };
+                    
+                    this.ws.onmessage = (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            this.logMessage(`📨 Received: ${JSON.stringify(data)}`, 'info');
+                        } catch (e) {
+                            this.logMessage(`📨 Received (raw): ${event.data}`, 'info');
+                        }
+                    };
+                    
+                    this.ws.onerror = (error) => {
+                        this.logMessage(`❌ WebSocket error: ${error}`, 'error');
+                        this.updateStatus('disconnected', '❌ Connection Failed');
+                        this.updateButtons(false);
+                    };
+                    
+                    this.ws.onclose = (event) => {
+                        this.logMessage(`🔌 WebSocket closed. Code: ${event.code}, Reason: ${event.reason}`, 'warning');
+                        this.updateStatus('disconnected', '🔌 Disconnected');
+                        this.updateButtons(false);
+                    };
+                    
+                } catch (error) {
+                    this.logMessage(`💥 Failed to create WebSocket: ${error.message}`, 'error');
+                    this.updateStatus('disconnected', '❌ Connection Failed');
+                    this.updateButtons(false);
+                }
+            }
+            
+            sendTestMessage() {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    const testMessage = {
+                        type: 'message',
+                        text: 'Hello from WebSocket test!'
+                    };
+                    
+                    this.logMessage(`📤 Sending: ${JSON.stringify(testMessage)}`);
+                    this.ws.send(JSON.stringify(testMessage));
+                } else {
+                    this.logMessage('⚠️ Cannot send message - WebSocket not connected', 'warning');
+                }
+            }
+            
+            sendToServer(data) {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify(data));
+                }
+            }
+            
+            disconnect() {
+                if (this.ws) {
+                    this.logMessage('👋 Closing WebSocket connection...');
+                    this.ws.close();
+                    this.ws = null;
+                }
+            }
+            
+            updateStatus(className, text) {
+                this.status.className = `status ${className}`;
+                this.status.textContent = text;
+            }
+            
+            updateButtons(connected) {
+                this.testBtn.disabled = connected;
+                this.sendBtn.disabled = !connected;
+                this.disconnectBtn.disabled = !connected;
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 WebSocket test initialized');
+            new WebSocketTest();
+        });
+    </script>
+</body>
+</html>

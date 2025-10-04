@@ -1,0 +1,12 @@
+HTTP/2 426 
+date: Thu, 02 Oct 2025 09:02:03 GMT
+content-type: text/plain; charset=utf-8
+content-length: 158
+access-control-allow-credentials: true
+access-control-allow-origin: https://8080-566bbffc-be5f-4b4b-9f91-e404e1f921df.proxy.daytona.works
+server: Python/3.11 websockets/15.0.1
+vary: Origin
+
+Failed to open a WebSocket connection: missing Connection header.
+
+You cannot access a WebSocket server directly with a browser. You need a WebSocket client.
